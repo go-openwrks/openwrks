@@ -11,17 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package openwrks_test
+package client_test
 
 import (
 	"testing"
 
-	"github.com/go-openwrks/openwrks"
+	"github.com/go-openwrks/openwrks/client"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestOptErrorError(t *testing.T) {
-	err := openwrks.OptError{
+	err := client.OptError{
 		Name:    "Test",
 		Message: "Whoops it is only a test.",
 	}
