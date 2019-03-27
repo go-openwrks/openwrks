@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/moul/http2curl"
 )
 
 type (
@@ -34,9 +36,10 @@ type (
 
 	// Client will communicate with Openwrks API.
 	Client struct {
-		http *http.Client
-		env  Environment
-		key  string
+		http  *http.Client
+		env   Environment
+		key   string
+		debug bool
 	}
 )
 
@@ -76,6 +79,11 @@ func (c *Client) Do(ctx context.Context, method, url string, body io.Reader) (*h
 
 	if body != nil {
 		req.Header.Set("Content-Type", "application/json")
+	}
+
+	if c.debug {
+		cmd, _ := http2curl.GetCurlCommand(req)
+		println("Executing: " + cmd.String())
 	}
 
 	return c.http.Do(req)
@@ -119,6 +127,14 @@ func WithKey(key string) Opt {
 		}
 
 		c.key = key
+		return nil
+	}
+}
+
+// SetDebug value on client, this will print requests made as cURL into stdout.
+func SetDebug(v bool) Opt {
+	return func(c *Client) error {
+		c.debug = v
 		return nil
 	}
 }
