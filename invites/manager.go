@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"net/url"
 
 	"github.com/go-openwrks/openwrks/client"
 )
@@ -13,6 +15,8 @@ type (
 		client *client.Client
 	}
 )
+
+const ()
 
 func NewInviteManager(c *client.Client) *InviteManager {
 	return &InviteManager{
@@ -30,4 +34,15 @@ func (m *InviteManager) CreateInvite(ctx context.Context, req *CreateInviteReque
 
 	out := &CreateInviteResponse{}
 	return out, client.TransformResponse(res, out)
+}
+
+func (m *InviteManager) ExtractRedirectResponse(qv url.Values) (*RedirectResponse, error) {
+	if err := qv.Get("errorCode"); err != "" {
+		return nil, errors.New(err)
+	}
+
+	return &RedirectResponse{
+		InvitationID:      qv.Get("invitationId"),
+		CustomerReference: qv.Get("customerReference"),
+	}, nil
 }

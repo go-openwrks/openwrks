@@ -34,4 +34,10 @@ type (
 		// The date and time that the flowUrl will no longer be valid
 		ExpirationDate string `json:"expirationDate"`
 	}
+
+	// RedirectResponse is returned
+	RedirectResponse struct {
+		InvitationID      string
+		CustomerReference string
+	}
 )

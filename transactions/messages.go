@@ -1,8 +1,14 @@
 package transactions
 
+import (
+	"time"
+)
+
 type (
 	// ListTransactionsOptions provides a way of filtering down Transactions.
 	ListTransactionsOptions struct {
+		From  time.Time
+		To    time.Time
 		Page  int64
 		Limit int64
 	}
